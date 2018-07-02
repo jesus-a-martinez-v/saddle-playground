@@ -1,5 +1,4 @@
 import org.saddle.index.{InnerJoin, LeftJoin, OuterJoin, RightJoin}
-import org.saddle.stats.SeriesRollingStats
 import org.saddle.{*, Index, Series, Vec}
 // Creation
 Series(Vec(32, 12, 9))

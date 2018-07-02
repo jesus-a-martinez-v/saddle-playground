@@ -135,7 +135,3 @@ f1.groupBy(_ == "a").transform(_.demeaned)
 f1.join(g, how = LeftJoin)
 f1.join(s, how = LeftJoin)
 f1.joinS(s, how = LeftJoin)
-
-
-
-
