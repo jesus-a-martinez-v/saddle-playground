@@ -1,8 +1,7 @@
 import org.saddle.{Mat, Vec, mat, na}
+
 // Creation
-
 Mat(2, 2, Array(1, 2, 3, 4))
-
 Mat(Array(1, 3), Array(2, 4))
 Mat(Array(Array(1, 3), Array(2, 4)))
 Mat(Vec(1, 3), Vec(2, 4))

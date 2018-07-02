@@ -16,18 +16,18 @@ vec.zeros(5)
 
 // Creation using randomized factories
 vec.rand(1000)
-vec.randp(1000)
+vec.randp(1000)  // Only positive values.
 vec.randi(1000)
-vec.randpi(1000) % 10
-vec.randn(1000)
-vec.randn2(100, 2, 15)
+vec.randpi(1000) % 10  // Only positive integers between 0 and 9.
+vec.randn(1000)  // Random numbers drawn from a normal distribution.
+vec.randn2(100, 2, 15)  // Random numbers drawn from a normal distribution with mean 2 and standard deviation 15.
 
 // Arithmetic
 Vec(1, 2, 3) + Vec(4, 5, 6)
 Vec(1, 2, 3) * Vec(4, 5, 6)
 Vec(1, 2, 3) dot Vec(4, 5, 6)
 Vec(1, 2, 3) outer Vec(4, 5, 6)
-Vec(1, 2, 3) ** Vec(4, 5, 6)
+Vec(1, 2, 3) ** Vec(4, 5, 6)  // Element-wise exponentiation.
 Vec(1, 2, 3) << 2
 Vec(1, 2, 3) & 0x1
 Vec(1, 2, 3) + 2
@@ -35,13 +35,13 @@ Vec(1, 2, 3) + 2
 // Slicing
 val v = vec.rand(10)
 
-v.at(2)
-v.raw(2)
+v.at(2)  // Boxed
+v.raw(2)  // Unboxed.
 
-v(2, 4, 8)
-v(2 -> 8)
-v(* -> 3)
-v(8 -> *)
+v(2, 4, 8)  // Get elements at indices 2, 4 and 8.
+v(2 -> 8)  // Get elements from indices 2 through 8.
+v(* -> 3)  // Get all elements up to index 3.
+v(8 -> *)  // Get all elements from index 8 on.
 v.slice(0, 3)
 v.slice(0, 8, 2)
 
@@ -77,11 +77,12 @@ v.rolling(5, _.stdev)
 
 // Advanced
 
+// Equivalent
 v filter (_ > 0.5)
 v where v > 0.5
 v take v.find(_ > 0.5)
 
-v.filterFoldLeft(_ > 0.5)(0d) { case (acc, d) => acc + d}
+v.filterFoldLeft(_ > 0.5)(0d) { case (acc, d) => acc + d }
 v shift 1
 
 v.reversed
