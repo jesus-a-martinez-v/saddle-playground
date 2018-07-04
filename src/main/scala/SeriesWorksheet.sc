@@ -1,13 +1,14 @@
 import org.saddle.index.{InnerJoin, LeftJoin, OuterJoin, RightJoin}
 import org.saddle.{*, Index, Series, Vec}
+
 // Creation
 Series(Vec(32, 12, 9))
 Series("a" -> 1, "b" -> 2, "c" -> 3)
 Series(List("a" -> 1, "b" -> 2, "c" -> 3): _*)
 Series(Vec(1, 2, 3), Index("a", "b", "c"))
 Series.empty[String, Int]
-Series(Vec(1, 2, 3), Index("c", "b", "a"))
-Series(Vec(1, 2, 3, 4), Index("c", "b", "a", "b"))
+Series(Vec(1, 2, 3), Index("c", "b", "a"))  // The order matters.
+Series(Vec(1, 2, 3, 4), Index("c", "b", "a", "b"))  // We can have repeated names in the index.
 
 // Extract data
 val q = Series(Vec(1, 3, 2, 4), Index("c", "b", "a", "b"))
@@ -15,9 +16,11 @@ val q = Series(Vec(1, 3, 2, 4), Index("c", "b", "a", "b"))
 q.values
 q.index
 
+// Extracts by numerical offset.
 q.at(2)
 q.at(2, 3, 1)
 
+// Extracts by key.
 q.keyAt(2)
 q.keyAt(2, 3, 1)
 
@@ -26,6 +29,7 @@ q.sorted
 
 q("b")
 
+// The order matters
 q("a", "b")
 q("b", "a")
 
@@ -111,6 +115,6 @@ a.join(b, how = OuterJoin)
 
 val t = Series(Vec(1, 2, 3, 4), Index((1, 1), (1, 2), (2, 1), (2, 2)))
 
-val f = t.pivot
+val f = t.pivot  // Rotates the series.
 
-f.melt
+f.melt  // Rotates it back

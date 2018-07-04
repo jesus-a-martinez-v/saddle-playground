@@ -9,15 +9,15 @@ val u = Vec(3, 4)
 val s = Series("a" -> 1, "b" -> 2)
 val t = Series("b" -> 3, "c" -> 4)
 
-Frame(v, u)
-Frame("x" -> v, "y" -> u)
-Frame(s, t)
-Frame("x" -> s, "y" -> t)
-Frame(Seq(s, t), Index("x", "y"))
-Frame(Seq(v, u), Index(0, 1), Index("x", "y"))
+Frame(v, u)  // Two-column frame.
+Frame("x" -> v, "y" -> u)  // With column index.
+Frame(s, t) // Aligned along rows
+Frame("x" -> s, "y" -> t)  // with column index
+Frame(Seq(s, t), Index("x", "y"))  // Explicit column index
+Frame(Seq(v, u), Index(0, 1), Index("x", "y"))  // Explicit row and column indices.
 Frame(Seq(v, u), Index("a", "b"))
 
-// Heterogeneous frame
+// Heterogeneous frame (supports several types of data)
 val p = Panel(Vec(1, 2, 3), Vec("a", "b", "c"))
 
 p.colType[Int]
@@ -103,7 +103,7 @@ f1 + g
 
 f1.joinMap(g, rhow = LeftJoin, chow = LeftJoin) { case (x, y) => x + y }
 
-val (fNew, gNew) = f1.align(g, rhow = LeftJoin, chow = OuterJoin)
+val (fNew, gNew) = f1.align(g, rhow = LeftJoin, chow = OuterJoin) // Aligns the dimensions of both frames without actually performing the join operation.
 
 
 // Sorting
@@ -120,18 +120,18 @@ f1.mapVec(v => v.demeaned)
 f1.reduce(s => s.mean)
 f1.transform(s => s.reversed)
 
-// Masking
-f1.mask(_ > 2)
-f1.mask(Vec(false, true, true))
+  // Masking
+  f1.mask(_ > 2)  // Mask out values > 2
+  f1.mask(Vec(false, true, true))  // Mask out rows 1 and 2 (keep row 0)
 
-f1.mask(Vec(true, false, false)).rsqueeze
-f1.rmask(Vec(false, true)).squeeze
+  f1.mask(Vec(true, false, false)).rsqueeze  // Drop rows containing NA values
+  f1.rmask(Vec(false, true)).squeeze  // Takes "X" column.
 
 // Group by
 f1.groupBy(_ == "a").combine(_.count)
 f1.groupBy(_ == "a").transform(_.demeaned)
 
-// Join
-f1.join(g, how = LeftJoin)
-f1.join(s, how = LeftJoin)
-f1.joinS(s, how = LeftJoin)
+// Joining
+f1.join(g, how = LeftJoin)              // Left joins on row index, drops col indexes
+f1.join(s, how = LeftJoin)              // Implicitly promotes s to Frame
+f1.joinS(s, how = LeftJoin)             // Use Series directly
